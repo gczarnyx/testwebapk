@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#317EFB" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    h1 {
+      text-align: center;
+    }
+    #calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    input[type="text"] {
+      grid-column: span 4;
+      padding: 15px;
+      font-size: 1.5em;
+      text-align: right;
+    }
+    button {
+      padding: 20px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 5px;
+      background: #317EFB;
+      color: white;
+      cursor: pointer;
+    }
+    button:active {
+      background: #245dc1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kalkulator</h1>
+  <div id="calculator">
+    <input type="text" id="display" disabled />
+    <button>7</button>
+    <button>8</button>
+    <button>9</button>
+    <button>/</button>
+    <button>4</button>
+    <button>5</button>
+    <button>6</button>
+    <button>*</button>
+    <button>1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>-</button>
+    <button>0</button>
+    <button>.</button>
+    <button>=</button>
+    <button>+</button>
+    <button id="clear">C</button>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('#calculator button');
+    let current = '';
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = btn.textContent;
+        if (val === '=') {
+          try {
+            current = eval(current).toString();
+          } catch {
+            current = 'Błąd';
+          }
+        } else if (val === 'C') {
+          current = '';
+        } else {
+          current += val;
+        }
+        display.value = current;
+      });
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(console.error);
+    }
+  </script>
+</body>
+</html>
